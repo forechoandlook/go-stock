@@ -5,6 +5,7 @@ import (
 	"errors"
 	"go-stock/backend/db"
 	"go-stock/backend/logger"
+	"os"
 	"time"
 
 	"github.com/samber/lo"
@@ -230,5 +231,10 @@ func GetSettingConfig() *SettingConfig {
 	settingConfig.Settings = settings
 	settingConfig.AiConfigs = aiConfigs
 
+	if token := os.Getenv("TUSHARE_TOKEN"); token != "" {
+		settingConfig.TushareToken = token
+		// log
+		logger.SugaredLogger.Infof("TushareToken from env: %s", token[:4]+"****")
+	}
 	return settingConfig
 }
